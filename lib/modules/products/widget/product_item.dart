@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:xenshop/constants/colors_constants.dart';
 import 'package:xenshop/constants/string_constants.dart';
+import 'package:xenshop/modules/products/bloc/products_bloc.dart';
 import 'package:xenshop/modules/products/model/product.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xenshop/modules/shopping_cart/bloc/cart_bloc.dart';
+import 'package:xenshop/modules/shopping_cart/model/cart_model.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   const ProductItem({Key? key, required this.product, required this.index})
       : super(key: key);
 
   final Product product;
   final int index;
 
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  late List<CartModel> cartList;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,12 +42,12 @@ class ProductItem extends StatelessWidget {
                             Container(
                               height: 90,
                               width: 90.0,
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               child: ClipRRect(
                                 child: FadeInImage.assetNetwork(
                                   placeholder:
                                       'assets/images/fade_banner_image.png',
-                                  image: product.image!,
+                                  image: widget.product.image!,
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -63,7 +73,7 @@ class ProductItem extends StatelessWidget {
                               children: [
                                 SizedBox(
                                   height: 35,
-                                  child: Text(product.title!,
+                                  child: Text(widget.product.title!,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: const TextStyle(
@@ -73,7 +83,7 @@ class ProductItem extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   height: 55,
-                                  child: Text(product.description!,
+                                  child: Text(widget.product.description!,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                       style: const TextStyle(
@@ -89,7 +99,9 @@ class ProductItem extends StatelessWidget {
                               children: [
                                 const SizedBox(width: 20),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    context.read<ProductsBloc>().add(AddProduct(productId: widget.product.id!, cartList: cartList));
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -122,4 +134,12 @@ class ProductItem extends StatelessWidget {
           ],
         ));
   }
+
+  @override
+  void initState() {
+    cartList = context.read<CartBloc>().state.cartList;
+    super.initState();
+  }
+
 }
+

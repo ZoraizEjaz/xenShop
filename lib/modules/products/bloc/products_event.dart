@@ -14,3 +14,15 @@ class FetchProductByCategory extends ProductEvents {
 }
 
 class ResetState extends ProductEvents {}
+
+class ChangeState extends ProductEvents {}
+
+class AddProduct extends ProductEvents {
+  final int productId;
+  final List<CartModel> cartList;
+  AddProduct({required this.productId,required this.cartList});
+
+  @override
+  List<Object> get props => [productId, cartList];
+
+}

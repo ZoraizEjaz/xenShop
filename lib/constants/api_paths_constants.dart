@@ -4,4 +4,5 @@ const String login = "auth/login";
 const String products = "products";
 const String category = "category";
 const String productCategories = "products/categories";
-const String cart = "cart";
+const String cart = "carts";
+const String userCartData = "carts/user";

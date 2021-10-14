@@ -9,4 +9,15 @@ class ProductsDataSource {
     return response;
   }
 
+  Future<dynamic> addProductToCart({required Object body}) async{
+    final response = await _apiProvider.postWithObject(cart, body);
+    return response;
+  }
+
+  Future<dynamic> updateProductToCart({required int cartId,required Object body}) async{
+    final response = await _apiProvider.patchWithObject(cart + '/'+ cartId.toString(), body);
+    return response;
+  }
+
+
 }

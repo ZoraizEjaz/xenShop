@@ -6,5 +6,7 @@ const String completeFormCorrectly = "Complete form correctly";
 const String loginWithYourAccountLbl = "Login with you account";
 const String categoriesScreenName = "Categories";
 const String productScreenName = "Products";
+const String cartScreenName = "Cart";
 const String addToCart = "Add Cart";
 const String categoryLbl = "Category";
+const String checkOutLbl = "checkOut";

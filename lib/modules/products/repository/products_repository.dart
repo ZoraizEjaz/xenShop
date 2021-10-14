@@ -8,4 +8,11 @@ class ProductRepository {
     return await productsDataSource.getProductsByCategoryType(categoryType: categoryType);
   }
 
+  Future<dynamic> addProductToCart({required Object body}) async {
+    return await productsDataSource.addProductToCart(body: body);
+  }
+
+  Future<dynamic> updateProductToCart({required int cartId, required Object body}) async {
+    return await productsDataSource.updateProductToCart(cartId: cartId, body: body);
+  }
 }

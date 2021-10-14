@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:xenshop/constants/app_constants.dart';
 import 'package:xenshop/constants/colors_constants.dart';
 import 'package:xenshop/constants/string_constants.dart';
 import 'package:xenshop/modules/categories/bloc/category_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xenshop/modules/categories/widget/category_item.dart';
+import 'package:xenshop/modules/shopping_cart/bloc/cart_bloc.dart';
 import 'package:xenshop/utils/helpers/internet/internet_cubit.dart';
 import 'package:badges/badges.dart';
 
@@ -16,6 +18,8 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   late CategoryBloc _categoryBloc;
+  late CartBloc _cartBloc;
+  int totalItemsInCart = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,10 @@ class _CategoryPageState extends State<CategoryPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0,top: 5),
-            child: Badge(
-              badgeContent: const Text('3'),
+            child: InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(navShoppingCart);
+              },
               child: const Icon(Icons.shopping_cart),
             ),
           )
@@ -40,7 +46,9 @@ class _CategoryPageState extends State<CategoryPage> {
             return const Center(child: Text(noInternetConnected));
           } else {
             return BlocConsumer<CategoryBloc, CategoryState>(
-                listener: (context, state) {},
+                listener: (context, state) {
+                  setState(() {});
+                },
                 builder: (context, state) {
                   switch (state.status) {
                     case CategoryStatus.initial:
@@ -84,7 +92,9 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
     _categoryBloc = context.read<CategoryBloc>();
+    _cartBloc = context.read<CartBloc>();
     _categoryBloc.add(FetchCategories());
+    _cartBloc.add(FetchUserCartList());
     super.initState();
   }
 }

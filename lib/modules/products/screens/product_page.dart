@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:xenshop/constants/app_constants.dart';
 import 'package:xenshop/constants/colors_constants.dart';
 import 'package:xenshop/constants/string_constants.dart';
 import 'package:xenshop/modules/categories/bloc/category_bloc.dart';
 import 'package:xenshop/modules/products/bloc/products_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xenshop/modules/products/widget/product_item.dart';
+import 'package:xenshop/modules/shopping_cart/bloc/cart_bloc.dart';
 import 'package:xenshop/utils/helpers/internet/internet_cubit.dart';
 import 'package:badges/badges.dart';
 
@@ -17,6 +19,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   late ProductsBloc _productsBloc;
+  late CartBloc _cartBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +30,14 @@ class _ProductPageState extends State<ProductPage> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 20.0,top: 5),
-              child: Badge(
-                badgeContent: const Text('3'),
-                child: const Icon(Icons.shopping_cart),
+              child: InkWell(
+                onTap: (){
+                  Navigator.of(context).pushNamed(navShoppingCart);
+                },
+                child: Badge(
+                  badgeContent: Text(_cartBloc.state.totalItemsInCart.toString()),
+                  child: const Icon(Icons.shopping_cart),
+                ),
               ),
             )
           ],
@@ -41,7 +49,15 @@ class _ProductPageState extends State<ProductPage> {
               return const Center(child: Text(noInternetConnected));
             } else {
               return BlocConsumer<ProductsBloc, ProductState>(
-                listener: (context, state) {},
+                listener: (context, state) {
+                  _productsBloc.add(ChangeState());
+                  if(state.status == ProductStatus.success){
+                    setState(() {
+                    });
+                  }else{
+                    showSnackBarMessage(context, 'Successfully add product to cart!');
+                  }
+                },
                 builder: (context, state) {
                   switch (state.status) {
                     case ProductStatus.initial:
@@ -49,6 +65,7 @@ class _ProductPageState extends State<ProductPage> {
                           child: CircularProgressIndicator(
                               color: primaryColorDark));
                     case ProductStatus.success:
+                    case ProductStatus.addToCartSuccess:
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -89,8 +106,18 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     _productsBloc = context.read<ProductsBloc>();
+    _cartBloc = context.read<CartBloc>();
     String selectedCatName = context.read<CategoryBloc>().state.selectedCatName;
     _productsBloc.add(FetchProductByCategory(categoryType: selectedCatName));
     super.initState();
   }
+
+  void showSnackBarMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+  }
+
 }
