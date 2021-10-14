@@ -15,14 +15,7 @@ class ApiProvider{
     'Accept-Charset': 'utf-8'
   };
 
-  Future<dynamic> get({required String url, bool sendToken = true}) async {
-    if(sendToken){
-      //var token = await _getApiToken();
-      var map = <String, String>{};
-      //map[TOKEN_KEY] = token;
-      requestHeaders.addAll(map);
-    }
-
+  Future<dynamic> get({required String url}) async {
     dynamic responseJson;
     try {
       debugPrint(_baseUrl+ url);
@@ -97,7 +90,7 @@ class ApiProvider{
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());
-        debugPrint(responseJson);
+        print(responseJson);
         return responseJson;
       case 201:
       case 204:

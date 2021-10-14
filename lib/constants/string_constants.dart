@@ -4,3 +4,4 @@ const String registerLbl = "Register";
 const String alreadyMember = "Already member?";
 const String completeFormCorrectly = "Complete form correctly";
 const String loginWithYourAccountLbl = "Login with you account";
+const String categoriesScreenName = "Categories";
