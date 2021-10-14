@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xenshop/constants/app_constants.dart';
 import 'package:xenshop/constants/colors_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xenshop/constants/string_constants.dart';
@@ -56,7 +57,7 @@ class _CartPageState extends State<CartPage> {
                                   height: 50,
                                   buttonColor: primaryColorDark,
                                   onPressed: (){
-
+                                    showAlertDialog(context);
                                   }),
                             )
                           )
@@ -83,5 +84,37 @@ class _CartPageState extends State<CartPage> {
   }
 
 
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed(navPaymentPage);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Alert!"),
+      content: const Text("Would you like to checkout?"),
+      actions: [
+        cancelButton,
+        okButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
 }

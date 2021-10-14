@@ -5,6 +5,7 @@ import 'package:xenshop/modules/categories/bloc/category_bloc.dart';
 import 'package:xenshop/modules/categories/data_source/category_data_source.dart';
 import 'package:xenshop/modules/categories/repository/category_repository.dart';
 import 'package:xenshop/modules/categories/screens/category_page.dart';
+import 'package:xenshop/modules/payment/screens/payment_page.dart';
 import 'package:xenshop/modules/products/bloc/products_bloc.dart';
 import 'package:xenshop/modules/products/data_source/products_data_source.dart';
 import 'package:xenshop/modules/products/repository/products_repository.dart';
@@ -74,7 +75,8 @@ class _AppViewState extends State<AppView> {
       routes: {
         '/': (context) => const CategoryPage(),
         navProductPage : (context) => const ProductPage(),
-        navShoppingCart : (context) => const CartPage()
+        navShoppingCart : (context) => const CartPage(),
+        navPaymentPage : (context) => const PaymentPage()
       },
       //onGenerateRoute: _appRouter.onGenerateRoute,
     );
