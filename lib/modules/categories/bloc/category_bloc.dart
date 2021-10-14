@@ -13,11 +13,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
     if(event is FetchCategories){
-      yield await mapSearchFieldsToState(state, event);
+      yield await mapCategoriesToState(state, event);
+    }else if (event is AddSelectedCategoryIndex){
+      yield state.copyWith(selectedCatName: event.selectedCatName);
     }
   }
 
-  Future<CategoryState> mapSearchFieldsToState(CategoryState state, CategoryEvent event) async {
+  Future<CategoryState> mapCategoriesToState(CategoryState state, CategoryEvent event) async {
     try{
       final response = await categoryRepository.getCategories();
       List<String> catList = List<String>.from(response);

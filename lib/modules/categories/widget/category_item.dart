@@ -1,5 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:xenshop/constants/app_constants.dart';
 import 'package:xenshop/constants/colors_constants.dart';
+import 'package:xenshop/modules/categories/bloc/category_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:xenshop/modules/products/bloc/products_bloc.dart';
 
 class CategoryItem extends StatelessWidget{
   final String categoryName;
@@ -10,7 +14,9 @@ class CategoryItem extends StatelessWidget{
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-
+        context.read<CategoryBloc>().add(AddSelectedCategoryIndex(selectedCatName: categoryName));
+        context.read<ProductsBloc>().add(ResetState());
+        Navigator.of(context).pushNamed(navProductPage);
       },
       child: Padding(
         padding: const EdgeInsets.all(7),

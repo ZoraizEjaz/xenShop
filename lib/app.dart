@@ -5,7 +5,12 @@ import 'package:xenshop/modules/categories/bloc/category_bloc.dart';
 import 'package:xenshop/modules/categories/data_source/category_data_source.dart';
 import 'package:xenshop/modules/categories/repository/category_repository.dart';
 import 'package:xenshop/modules/categories/screens/category_page.dart';
+import 'package:xenshop/modules/products/bloc/products_bloc.dart';
+import 'package:xenshop/modules/products/data_source/products_data_source.dart';
+import 'package:xenshop/modules/products/repository/products_repository.dart';
 import 'package:xenshop/theme.dart';
+import 'constants/app_constants.dart';
+import 'modules/products/screens/product_page.dart';
 import 'utils/helpers/internet/internet_cubit.dart';
 
 class App extends StatelessWidget {
@@ -24,6 +29,12 @@ class App extends StatelessWidget {
           create: (context) => CategoryBloc(
             categoryRepository:
                 CategoryRepository(categoryDatasource: CategoryDatasource()),
+          ),
+        ),
+        BlocProvider<ProductsBloc>(
+          create: (context) => ProductsBloc(
+            productRepository:
+            ProductRepository(productsDataSource: ProductsDataSource()),
           ),
         ),
       ],
@@ -52,6 +63,7 @@ class _AppViewState extends State<AppView> {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const CategoryPage(),
+        navProductPage : (context) => const ProductPage(),
       },
       //onGenerateRoute: _appRouter.onGenerateRoute,
     );

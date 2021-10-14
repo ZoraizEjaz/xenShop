@@ -6,3 +6,11 @@ class CategoryEvent extends Equatable {
 }
 
 class FetchCategories extends CategoryEvent {}
+
+class AddSelectedCategoryIndex extends CategoryEvent {
+  final String selectedCatName;
+  AddSelectedCategoryIndex({required this.selectedCatName});
+
+  @override
+  List<Object?> get props => [selectedCatName];
+}
