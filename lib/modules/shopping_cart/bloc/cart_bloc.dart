@@ -14,6 +14,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Stream<CartState> mapEventToState(CartEvent event) async* {
     if (event is FetchUserCartList) {
       yield await mapCartToState(state, event);
+    }else if (event is RemoveProductFromCart){
+      yield await mapRemoveProductFromCartToState(state, event);
+    }else if (event is ChangeStateCart){
+      yield state.copyWith(
+        status: CartStatus.success
+      );
     }
   }
 
@@ -32,6 +38,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           message: 'success',
           totalItemsInCart: totalItemsInCart,
           cartList: list);
+    } on Exception {
+      return state.copyWith(status: CartStatus.failure, message: '');
+    }
+  }
+
+  Future<CartState> mapRemoveProductFromCartToState(CartState state, RemoveProductFromCart event) async {
+    try {
+      final response = await cartRepository.removeProductFromCart(cartId: event.cartId);
+      var total = state.totalItemsInCart - 1;
+
+      return state.copyWith(
+          status: CartStatus.deleteSuccess,
+          message: 'success',
+          totalItemsInCart: total >=0 ? total : 0 ,
+      );
     } on Exception {
       return state.copyWith(status: CartStatus.failure, message: '');
     }

@@ -60,12 +60,11 @@ class ApiProvider{
     return responseJson;
   }
 
-  Future<dynamic> delete(String url, Map<String, String> header, Map<String,dynamic> body) async {
-    requestHeaders.addAll(header);
+  Future<dynamic> delete({required String url}) async {
     debugPrint(_baseUrl+ url);
     dynamic responseJson;
     try {
-      final response = await http.delete(Uri.parse(_baseUrl + url),headers: requestHeaders,body: json.encode(body));
+      final response = await http.delete(Uri.parse(_baseUrl + url));
       responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');

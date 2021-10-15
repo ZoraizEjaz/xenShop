@@ -15,4 +15,9 @@ class CartDataSource {
     return response;
   }
 
+  Future<dynamic> removeProductFromCart({required int cartId}) async {
+    final response = await _apiProvider.delete(url: cart + '/' + cartId.toString());
+    return response;
+  }
+
 }

@@ -31,7 +31,13 @@ class _CartPageState extends State<CartPage> {
             return Padding(
               padding: const EdgeInsets.all(8),
               child: BlocConsumer<CartBloc, CartState>(
-                listener: (context, state){},
+                listener: (context, state){
+                  if(state.status == CartStatus.deleteSuccess){
+                    showSnackBarMessage(context, 'Successfully delete product from cart!');
+                  }
+
+                  _cartBloc.add(ChangeStateCart());
+                },
                 builder: (context,state){
                   switch(state.status){
                     case CartStatus.initial:
@@ -115,6 +121,14 @@ class _CartPageState extends State<CartPage> {
         return alert;
       },
     );
+  }
+
+  void showSnackBarMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(message)),
+      );
   }
 
 }

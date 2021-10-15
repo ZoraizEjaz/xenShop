@@ -12,4 +12,8 @@ class CartRepository {
     return await cartDataSource.getAllProductsList();
   }
 
+  Future<dynamic> removeProductFromCart({required int cartId}) async {
+    final response = await cartDataSource.removeProductFromCart(cartId: cartId);
+    return response;
+  }
 }
