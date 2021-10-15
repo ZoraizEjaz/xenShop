@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:xenshop/modules/categories/widget/category_item.dart';
 import 'package:xenshop/modules/shopping_cart/bloc/cart_bloc.dart';
 import 'package:xenshop/utils/helpers/internet/internet_cubit.dart';
-import 'package:badges/badges.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);

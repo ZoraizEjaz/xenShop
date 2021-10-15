@@ -11,3 +11,4 @@ const String cartScreenName = "Cart";
 const String addToCart = "Add Cart";
 const String categoryLbl = "Category";
 const String checkOutLbl = "Check Out";
+const String backToHomeLbl = "Back to home";

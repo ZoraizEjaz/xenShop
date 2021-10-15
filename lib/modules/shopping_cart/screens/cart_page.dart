@@ -35,7 +35,6 @@ class _CartPageState extends State<CartPage> {
                   if(state.status == CartStatus.deleteSuccess){
                     showSnackBarMessage(context, 'Successfully delete product from cart!');
                   }
-
                   _cartBloc.add(ChangeStateCart());
                 },
                 builder: (context,state){

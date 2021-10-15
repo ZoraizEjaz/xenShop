@@ -21,10 +21,9 @@ class CartItem extends StatelessWidget {
               'Date : ',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            Text(localDate(cart.date!),  style: const TextStyle(fontSize: 16)),
+            Text(localDate(cart.date!), style: const TextStyle(fontSize: 16)),
           ],
         ),
-
         ListView.builder(
             shrinkWrap: true,
             itemCount: cart.products!.length,
@@ -32,12 +31,17 @@ class CartItem extends StatelessWidget {
               return Dismissible(
                 direction: DismissDirection.endToStart,
                 key: UniqueKey(),
-                background: Container(color: Colors.red, child: const Icon(Icons.delete, color: Colors.white)),
-                onDismissed: (direction){
-                  setState(){
+                background: Container(
+                    color: Colors.red,
+                    child: const Icon(Icons.delete, color: Colors.white)),
+                onDismissed: (direction) {
+                  setState() {
                     cart.products!.removeAt(index);
                   }
-                  context.read<CartBloc>().add(RemoveProductFromCart(cartId: cart!.id!, productId: cart.products![index].productId!));
+
+                  context.read<CartBloc>().add(RemoveProductFromCart(
+                      cartId: cart.id!,
+                      productId: cart.products![index].productId!));
                 },
                 child: CartRow(products: cart.products![index]),
               );
