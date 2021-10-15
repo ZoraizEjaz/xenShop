@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:xenshop/constants/api_paths_constants.dart';
-import 'package:xenshop/utils/services/shared_preference/shared_preference.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
@@ -9,20 +8,11 @@ import 'custom_exception.dart';
 
 class ApiProvider{
   final String _baseUrl = baseUrl;
-  final SharedPreference _sharedPref = SharedPreference();
-
   Map<String, String> requestHeaders = {
     'Accept-Charset': 'utf-8'
   };
 
-  Future<dynamic> get({required String url, bool sendToken = true}) async {
-    if(sendToken){
-      //var token = await _getApiToken();
-      var map = <String, String>{};
-      //map[TOKEN_KEY] = token;
-      requestHeaders.addAll(map);
-    }
-
+  Future<dynamic> get({required String url}) async {
     dynamic responseJson;
     try {
       debugPrint(_baseUrl+ url);
@@ -34,17 +24,9 @@ class ApiProvider{
     return responseJson;
   }
 
-  Future<dynamic> post({required String url, required Map<String,dynamic> body, bool sendToken = true}) async {
+  Future<dynamic> post({required String url, required Map<String,dynamic> body}) async {
     debugPrint(_baseUrl+ url);
-
-    if(sendToken){
-      //var token = await _getApiToken();
-      var map = <String, String>{};
-      //print(token);
-      //map[TOKEN_KEY] = token;
-      requestHeaders.addAll(map);
-    }
-    var responseJson;
+    dynamic responseJson;
     try {
       final response = await http.post(Uri.parse(_baseUrl + url),headers: requestHeaders,body: body);
       responseJson = _response(response);
@@ -54,12 +36,11 @@ class ApiProvider{
     return responseJson;
   }
 
-  Future<dynamic> postWithObject(String url, Map<String, String> header, Object body) async {
-    requestHeaders.addAll(header);
+  Future<dynamic> postWithObject(String url, Object body) async {
     debugPrint(_baseUrl+ url);
     dynamic responseJson;
     try {
-      final response = await http.post(Uri.parse(_baseUrl + url),headers: requestHeaders,body: json.encode(body));
+      final response = await http.post(Uri.parse(_baseUrl + url),body: json.encode(body));
       responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -67,12 +48,23 @@ class ApiProvider{
     return responseJson;
   }
 
-  Future<dynamic> delete(String url, Map<String, String> header, Map<String,dynamic> body) async {
-    requestHeaders.addAll(header);
+  Future<dynamic> patchWithObject(String url, Object body) async {
     debugPrint(_baseUrl+ url);
     dynamic responseJson;
     try {
-      final response = await http.delete(Uri.parse(_baseUrl + url),headers: requestHeaders,body: json.encode(body));
+      final response = await http.patch(Uri.parse(_baseUrl + url),body: json.encode(body));
+      responseJson = _response(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+    return responseJson;
+  }
+
+  Future<dynamic> delete({required String url}) async {
+    debugPrint(_baseUrl+ url);
+    dynamic responseJson;
+    try {
+      final response = await http.delete(Uri.parse(_baseUrl + url));
       responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -97,7 +89,7 @@ class ApiProvider{
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body.toString());
-        debugPrint(responseJson);
+        print(responseJson);
         return responseJson;
       case 201:
       case 204:
